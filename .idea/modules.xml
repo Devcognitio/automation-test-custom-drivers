@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/automation-tests-custom-drivers.iml" filepath="$PROJECT_DIR$/.idea/modules/automation-tests-custom-drivers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/automation-tests-custom-drivers_main.iml" filepath="$PROJECT_DIR$/.idea/modules/automation-tests-custom-drivers_main.iml" group="automation-tests-custom-drivers" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/automation-tests-custom-drivers_test.iml" filepath="$PROJECT_DIR$/.idea/modules/automation-tests-custom-drivers_test.iml" group="automation-tests-custom-drivers" />
+    </modules>
+  </component>
+</project>

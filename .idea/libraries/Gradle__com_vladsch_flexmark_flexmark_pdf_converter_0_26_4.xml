@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.vladsch.flexmark:flexmark-pdf-converter:0.26.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vladsch.flexmark/flexmark-pdf-converter/0.26.4/ec02d30f11aba48a94b46161d7834a7ddfd4ecc3/flexmark-pdf-converter-0.26.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vladsch.flexmark/flexmark-pdf-converter/0.26.4/97addcb142a61a44508b0d7456f0220363c57b3a/flexmark-pdf-converter-0.26.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

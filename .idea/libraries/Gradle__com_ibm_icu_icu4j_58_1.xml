@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.ibm.icu:icu4j:58.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/58.1/4454cc527bd966be254aad41beedf0275ef92312/icu4j-58.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/58.1/576b25959fb686b5b9f8fceb21bf71ad822a307a/icu4j-58.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
