@@ -4,8 +4,6 @@ import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationExceptio
 import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import net.serenitybdd.core.SerenitySystemProperties;
-import net.thucydides.core.ThucydidesSystemProperty;
 import net.thucydides.core.guice.Injectors;
 import net.thucydides.core.util.EnvironmentVariables;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
-import static net.thucydides.core.ThucydidesSystemProperty.THUCYDIDES_TIMEOUT;
 
 public class OwnAppiumDriver extends Driver {
 
