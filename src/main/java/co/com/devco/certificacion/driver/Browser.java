@@ -10,19 +10,19 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.Arrays.stream;
 
 public enum Browser {
+
     CHROME( "chrome", c -> {
             ChromeOptions options = new ChromeOptions();
             options.merge(c);
             return new ChromeDriver(options);
         }),
-    INTERNET_EXPLORER( "explorer", c -> {
+    INTERNET_EXPLORER( "ie", c -> {
         InternetExplorerOptions options = new InternetExplorerOptions(c);
         return new InternetExplorerDriver(options);
     }),
@@ -32,29 +32,26 @@ public enum Browser {
     });
 
     private String name;
-    private Function<Capabilities, WebDriver> function;
+    private Function<Capabilities, WebDriver> functionToCreateDriver;
 
-    Browser(String name, Function<Capabilities, WebDriver> function) {
+    Browser(String name, Function<Capabilities, WebDriver> functionToCreateDriver) {
         this.name = name;
-        this.function = function;
+        this.functionToCreateDriver = functionToCreateDriver;
     }
 
-    public WebDriver getDriver(DesiredCapabilities capabilities) {
-        return function.apply(capabilities);
+    public static Browser getBrowserByNameOtherwiseChrome(String name){
+        Optional<Browser> optionalBrowser = stream(values()).filter(
+                n -> n.getName().equalsIgnoreCase(name)).findFirst();
+
+        return optionalBrowser.orElse(CHROME);
     }
 
     public String getName(){
         return this.name;
     }
 
-    public static Browser getBrowserByName(String name){
-        Browser Browser = CHROME;
-        List<Browser> browsers = Arrays.stream(values()).filter(
-                n -> n.getName().equalsIgnoreCase(name)
-        ).collect(toList());
-        if(!browsers.isEmpty()){
-            Browser = browsers.get(0);
-        }
-        return Browser;
+    public WebDriver getDriver(DesiredCapabilities capabilities) {
+        return functionToCreateDriver.apply(capabilities);
     }
+
 }
