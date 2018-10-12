@@ -16,38 +16,54 @@ import java.net.URL;
 
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
-public class AppCenterEnhancedAndroidDriver extends Driver {
+public class AppCenterEnhancedAndroidDriver extends EnhancedCapabilities implements Driver {
 
-    private final DesiredCapabilities capabilities;
+    private DesiredCapabilities capabilities;
     private EnhancedAndroidDriver<MobileElement> driver;
+    private static AppCenterEnhancedAndroidDriver thisInstance;
 
     private static final String PLATFORM_NAME_CAP = "appium.platformName";
     private static final String APPIUM_URL_CAP = "hub";
 
     private AppCenterEnhancedAndroidDriver() throws LoadDriverCapabilitiesException {
-        this.capabilities = super.loadCapabilities(Platform.MOBILE);
-        EnvironmentVariables environmentVariables = Injectors.getInjector().getInstance(EnvironmentVariables.class);
-        environmentVariables.setProperty(PLATFORM_NAME_CAP, this.capabilities.getPlatform().name());
-    }
-
-    @Override
-    public AppiumDriver init() throws MalformedURLException {
-        if (this.driver == null) {
-            URL url = new URL(capabilities.getCapability(APPIUM_URL_CAP).toString());
-            this.driver = Factory.createAndroidDriver(url, capabilities);
-        }
-        return this.driver;
+        loadCapabilities();
     }
 
     public static WebDriver getDriver() throws FailedDriverCreationException {
-        Driver customDriver;
-        try {
-            customDriver = new AppCenterEnhancedAndroidDriver();
-            return (WebDriver) customDriver.init();
-        } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
-            throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
+        if (thisInstance == null) {
+            try {
+                thisInstance = new AppCenterEnhancedAndroidDriver();
+                return thisInstance.createDriver();
+            } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
+                throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
+            }
         }
+        return thisInstance.driver;
+    }
 
+    public static void takeScreenshot(String screenshotSubject) {
+        if (thisInstance.driver != null) {
+            thisInstance.driver.label(screenshotSubject);
+        }
+    }
+
+    @Override
+    public AppiumDriver createDriver() throws MalformedURLException, LoadDriverCapabilitiesException {
+        if (driver == null) {
+            if (capabilities == null) {
+                loadCapabilities();
+            }
+            URL url = new URL(capabilities.getCapability(APPIUM_URL_CAP).toString());
+            driver = Factory.createAndroidDriver(url, capabilities);
+        }
+        return driver;
+    }
+
+    @Override
+    public void loadCapabilities() throws LoadDriverCapabilitiesException {
+        capabilities = super.loadCapabilities(Platform.MOBILE);
+        EnvironmentVariables environmentVariables = Injectors.getInjector().getInstance(EnvironmentVariables.class);
+        environmentVariables.setProperty(PLATFORM_NAME_CAP, this.capabilities.getPlatform().name());
     }
 
 }
