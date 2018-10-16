@@ -11,35 +11,37 @@ import java.net.MalformedURLException;
 
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
-public class OwnWindowsDriver extends EnhancedCapabilities implements Driver{
+public class EnhancedWindowsDriver extends EnhancedCapabilities implements Driver{
 
+    private static EnhancedWindowsDriver thisInstance;
     private DesiredCapabilities capabilities;
     private WindowsDriver<WebElement> driver;
 
-    public OwnWindowsDriver() throws LoadDriverCapabilitiesException {
+    public EnhancedWindowsDriver(){
         super(Platform.WINDOWS);
     }
 
-    public WindowsDriver<WebElement> init() {
-        if(this.driver == null) {
-            this.driver = new WindowsDriver<>(capabilities);
-        }
-        return this.driver;
-    }
-
     public static WebDriver windows() throws FailedDriverCreationException {
-        Driver customDriver;
-        try {
-            customDriver = new OwnWindowsDriver();
-            return (WebDriver) customDriver.createDriver();
-        } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
-            throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
+        if (thisInstance == null) {
+            try {
+                thisInstance = new EnhancedWindowsDriver();
+                return thisInstance.createDriver();
+            } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
+                throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
+            }
         }
+        return thisInstance.driver;
     }
 
     @Override
-    public Object createDriver() throws MalformedURLException, LoadDriverCapabilitiesException {
-        return null;
+    public WebDriver createDriver() throws MalformedURLException, LoadDriverCapabilitiesException {
+        if(this.driver == null) {
+            if (capabilities == null) {
+                loadCapabilities();
+            }
+            this.driver = new WindowsDriver<>(capabilities);
+        }
+        return this.driver;
     }
 
     @Override

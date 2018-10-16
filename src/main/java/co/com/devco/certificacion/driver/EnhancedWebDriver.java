@@ -10,21 +10,21 @@ import java.net.MalformedURLException;
 import static co.com.devco.certificacion.driver.Browser.getBrowserByNameOtherwiseChrome;
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
-public class OwnWebDriver extends EnhancedCapabilities implements Driver {
+public class EnhancedWebDriver extends EnhancedCapabilities implements Driver {
 
     private static final String BROWSER_NAME_CAPABILITY = "driver";
     private DesiredCapabilities capabilities;
     private WebDriver driver;
-    private static OwnWebDriver thisInstance;
+    private static EnhancedWebDriver thisInstance;
 
-    private OwnWebDriver() throws LoadDriverCapabilitiesException {
+    private EnhancedWebDriver() {
         super(Platform.WEB);
     }
 
     public static WebDriver getDriver() throws FailedDriverCreationException {
         if (thisInstance == null) {
             try {
-                thisInstance = new OwnWebDriver();
+                thisInstance = new EnhancedWebDriver();
                 return thisInstance.createDriver();
             } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
                 throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
@@ -40,7 +40,7 @@ public class OwnWebDriver extends EnhancedCapabilities implements Driver {
                 loadCapabilities();
             }
             String browserName = checkBrowserName(this.capabilities);
-            Browser browser = defineBrowser(browserName);
+            Browser browser = getBrowserByNameOtherwiseChrome(browserName);
             this.driver = browser.getDriver(this.capabilities);
         }
         return this.driver;
@@ -55,7 +55,4 @@ public class OwnWebDriver extends EnhancedCapabilities implements Driver {
         return capabilities.getCapability(BROWSER_NAME_CAPABILITY).toString();
     }
 
-    private Browser defineBrowser(String browserName) {
-        return getBrowserByNameOtherwiseChrome(browserName);
-    }
 }
