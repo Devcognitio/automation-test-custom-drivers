@@ -11,16 +11,15 @@ import java.net.MalformedURLException;
 
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
-public class OwnWindowsDriver extends Driver {
+public class OwnWindowsDriver extends EnhancedCapabilities implements Driver{
 
-    private final DesiredCapabilities capabilities;
+    private DesiredCapabilities capabilities;
     private WindowsDriver<WebElement> driver;
 
     public OwnWindowsDriver() throws LoadDriverCapabilitiesException {
-        this.capabilities = super.loadCapabilities(Platform.WINDOWS);
+        super(Platform.WINDOWS);
     }
 
-    @Override
     public WindowsDriver<WebElement> init() {
         if(this.driver == null) {
             this.driver = new WindowsDriver<>(capabilities);
@@ -32,9 +31,19 @@ public class OwnWindowsDriver extends Driver {
         Driver customDriver;
         try {
             customDriver = new OwnWindowsDriver();
-            return (WebDriver) customDriver.init();
+            return (WebDriver) customDriver.createDriver();
         } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
             throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
         }
+    }
+
+    @Override
+    public Object createDriver() throws MalformedURLException, LoadDriverCapabilitiesException {
+        return null;
+    }
+
+    @Override
+    public void loadCapabilities() throws LoadDriverCapabilitiesException {
+        this.capabilities = super.loadCapabilitiesFromPropertyFile();
     }
 }

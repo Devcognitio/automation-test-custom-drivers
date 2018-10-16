@@ -13,6 +13,7 @@ jacoco {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 ext{
@@ -26,6 +27,10 @@ dependencies {
     compile "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion"
     compile "io.appium:java-client:6.0.0"
     compile "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityCucumberVersion"
+
+    implementation 'com.microsoft.appcenter:appium-test-extension:1.0'
+   // compile group: 'com.microsoft.appcenter', name: 'appcenter', version: '1.8.0'
+
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.9.1'
