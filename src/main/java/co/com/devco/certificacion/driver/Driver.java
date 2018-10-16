@@ -16,28 +16,28 @@ public abstract class Driver<T> {
     private Platform platform;
     private static final String FILE_SEPARATOR = File.separator;
 
-    protected DesiredCapabilities loadCapabilities(Platform platform) throws LoadDriverCapabilitiesException {
+    public Driver(Platform platform) {
         this.platform = platform;
-        String propertiesFileName = PropertiesFileName.valueOf(platform.name()).fileName();
-        InputStream inputStream = getInputStream(propertiesFileName);
-        return load(inputStream);
     }
 
-    private InputStream getInputStream(String propertiesFileName) throws LoadDriverCapabilitiesException {
-        try (InputStream inputStream = new FileInputStream(propertiesFileName)) {
-            return inputStream;
-        } catch (FileNotFoundException e) {
-            return ClassLoader.class.getResourceAsStream(FILE_SEPARATOR + propertiesFileName);
-        } catch (IOException e) {
-            throw new LoadDriverCapabilitiesException(ERROR_LOADING_CAPABILITIES + e.getMessage(), e.getCause());
-        }
-    }
-
-    private DesiredCapabilities load(InputStream inputStream) throws LoadDriverCapabilitiesException {
+    protected DesiredCapabilities loadCapabilities() throws LoadDriverCapabilitiesException {
+        InputStream inputStream = null;
         try {
+            inputStream = getInputstreamFromPropertiesFile();
             return tryLoad(inputStream);
         } catch (IOException e) {
             throw new LoadDriverCapabilitiesException(ERROR_LOADING_CAPABILITIES + e.getMessage(), e.getCause());
+        } finally {
+            closeInputStream(inputStream);
+        }
+    }
+
+    private InputStream getInputstreamFromPropertiesFile() {
+        String propertiesFileName = PropertiesFileName.valueOf(platform.name()).fileName();
+        try {
+            return new FileInputStream(propertiesFileName);
+        } catch (FileNotFoundException e) {
+            return ClassLoader.class.getResourceAsStream(FILE_SEPARATOR + propertiesFileName);
         }
     }
 
@@ -48,7 +48,7 @@ public abstract class Driver<T> {
         properties.entrySet().iterator().forEachRemaining(
             entry -> {
                 if (isThePlatformContainedInThe(entry)) {
-                    String property = entry.getKey().toString().replace(this.platform.getName() + ".", "");
+                    String property = entry.getKey().toString().replace(platform.getName() + ".", "");
                     String value = entry.getValue().toString();
                     desiredCapabilities.setCapability(property, value);
                 }
@@ -59,6 +59,16 @@ public abstract class Driver<T> {
 
     private boolean isThePlatformContainedInThe(Map.Entry<Object, Object> entry) {
         return entry.getKey().toString().contains(this.platform.getName());
+    }
+
+    private void closeInputStream(InputStream inputStream) throws LoadDriverCapabilitiesException {
+        try {
+            if(inputStream != null){
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            throw new LoadDriverCapabilitiesException(ERROR_LOADING_CAPABILITIES + e.getMessage(), e.getCause());
+        }
     }
 
     public static void tearDown(WebDriver driver) {

@@ -2,8 +2,14 @@ group 'co.com.devco.certification'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
+
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/jacoco/")
+}
 
 repositories {
     mavenCentral()
@@ -23,4 +29,6 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.9.1'
+    testCompile group: 'commons-io', name: 'commons-io', version: '2.6'
+    testCompile group: 'org.powermock', name: 'powermock-api-easymock', version: '1.7.4'
 }
