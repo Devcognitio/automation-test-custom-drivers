@@ -4,12 +4,13 @@ import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationExceptio
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class EnhancedWebDriverTest {
     private WebDriver driver;
 
     @Test
-    public void createOwnWebDriverChrome() throws IOException, FailedDriverCreationException {
+    public void testSuccessfulBecauseCreateChromeDriver() throws IOException, FailedDriverCreationException {
         addToThePropertyFileTheDriverPropertyWithValue("chrome");
 
         driver = EnhancedWebDriver.getDriver();
@@ -29,32 +30,42 @@ public class EnhancedWebDriverTest {
     }
 
     @Test
-    public void createOwnWebDriverFirefox() throws IOException, FailedDriverCreationException {
+    public void testSuccessfulBecauseCreateFirefoxDriver() throws IOException, FailedDriverCreationException {
         addToThePropertyFileTheDriverPropertyWithValue("firefox");
-        System.setProperty("webdriver.gecko.driver", "D:\\firefox64\\geckodriver.exe");
+
         driver = EnhancedWebDriver.getDriver();
 
         Assert.assertTrue(driver instanceof FirefoxDriver);
     }
 
-    @Ignore
     @Test
-    public void createOwnWebDriverInternetExplorer() throws IOException, FailedDriverCreationException {
-        addToThePropertyFileTheDriverPropertyWithValue("ie");
+    public void testSuccessfulBecauseCreateEdgeDriver() throws IOException, FailedDriverCreationException {
+        addToThePropertyFileTheDriverPropertyWithValue("edge");
 
         driver = EnhancedWebDriver.getDriver();
+
+        Assert.assertTrue(driver instanceof EdgeDriver);
+    }
+
+    @Test
+    public void testSuccessfulBecauseCreateDriverInternetExplorer() throws IOException, FailedDriverCreationException {
+        addToThePropertyFileTheDriverPropertyWithValue("ie");
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+        desiredCapabilities.setCapability("ignoreZoomSetting", true);
+
+        driver = EnhancedWebDriver.getDriver(desiredCapabilities);
 
         Assert.assertTrue(driver instanceof InternetExplorerDriver);
     }
 
     private void addToThePropertyFileTheDriverPropertyWithValue(String propertyValue) throws IOException {
+        //File propertyFile = FileUtils.getFile("src/test/resources/" + PropertiesFileName.WEB.fileName());
         File propertyFile = FileUtils.getFile(PropertiesFileName.WEB.fileName());
         FileUtils.writeStringToFile(propertyFile, String.format("webdriver.driver=%s", propertyValue), StandardCharsets.UTF_8);
     }
 
     @After
     public void tearDown(){
-        Driver.tearDown(driver);
-        driver = null;
+        EnhancedWebDriver.quit();
     }
 }

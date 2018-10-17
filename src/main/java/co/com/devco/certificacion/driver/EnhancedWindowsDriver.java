@@ -46,6 +46,14 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
 
     @Override
     public void loadCapabilities() throws LoadDriverCapabilitiesException {
-        this.capabilities = super.loadCapabilitiesFromPropertyFile();
+        this.capabilities = super.loadCapabilitiesFromPropertiesFile();
+    }
+
+    @Override
+    public void tearDown() {
+        if(thisInstance != null){
+            Driver.tearDown(thisInstance.driver);
+            thisInstance = null;
+        }
     }
 }

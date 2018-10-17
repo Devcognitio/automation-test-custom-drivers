@@ -2,10 +2,12 @@ package co.com.devco.certificacion.driver;
 
 import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException;
 import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
+import java.util.function.Function;
 
 import static co.com.devco.certificacion.driver.Browser.getBrowserByNameOtherwiseChrome;
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
@@ -21,16 +23,37 @@ public class EnhancedWebDriver extends EnhancedCapabilities implements Driver {
         super(Platform.WEB);
     }
 
+    private EnhancedWebDriver(Capabilities capabilities) {
+        super(Platform.WEB, capabilities);
+    }
+
+    public static WebDriver getDriver(Capabilities capabilities) throws FailedDriverCreationException {
+        EnhancedWebDriver enhancedWebDriver = getOrCreateEnhancedWebDriver(EnhancedWebDriver::new, capabilities);
+        return enhancedWebDriver.driver;
+    }
+
     public static WebDriver getDriver() throws FailedDriverCreationException {
+        EnhancedWebDriver enhancedWebDriver = getOrCreateEnhancedWebDriver(c -> new EnhancedWebDriver(), null);
+        return enhancedWebDriver.driver;
+    }
+
+    private static EnhancedWebDriver getOrCreateEnhancedWebDriver(Function<Capabilities, EnhancedWebDriver> functionToCreateEnhancedWebDriver, Capabilities capabilities) throws FailedDriverCreationException{
         if (thisInstance == null) {
             try {
-                thisInstance = new EnhancedWebDriver();
-                return thisInstance.createDriver();
+                thisInstance = functionToCreateEnhancedWebDriver.apply(capabilities);
+                thisInstance.createDriver();
+                return thisInstance;
             } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
                 throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
             }
         }
-        return thisInstance.driver;
+        return thisInstance;
+    }
+
+    public static void quit(){
+        if(thisInstance != null){
+            thisInstance.tearDown();
+        }
     }
 
     @Override
@@ -48,11 +71,17 @@ public class EnhancedWebDriver extends EnhancedCapabilities implements Driver {
 
     @Override
     public void loadCapabilities() throws LoadDriverCapabilitiesException {
-        this.capabilities = super.loadCapabilitiesFromPropertyFile();
+        this.capabilities = super.loadCapabilitiesFromPropertiesFile();
     }
 
     private String checkBrowserName(DesiredCapabilities capabilities) {
         return capabilities.getCapability(BROWSER_NAME_CAPABILITY).toString();
+    }
+
+    @Override
+    public void tearDown() {
+        Driver.tearDown(thisInstance.driver);
+        thisInstance = null;
     }
 
 }

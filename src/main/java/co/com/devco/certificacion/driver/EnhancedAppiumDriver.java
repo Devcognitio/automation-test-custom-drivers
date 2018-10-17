@@ -23,9 +23,8 @@ public class EnhancedAppiumDriver extends EnhancedCapabilities implements Driver
     private static final String PLATFORM_NAME_CAP = "appium.platformName";
     private static final String APPIUM_URL_CAP = "hub";
 
-    private EnhancedAppiumDriver() throws LoadDriverCapabilitiesException {
+    private EnhancedAppiumDriver(){
         super(Platform.MOBILE);
-        loadCapabilities();
     }
 
     public static WebDriver getDriver() throws FailedDriverCreationException {
@@ -54,9 +53,17 @@ public class EnhancedAppiumDriver extends EnhancedCapabilities implements Driver
 
     @Override
     public void loadCapabilities() throws LoadDriverCapabilitiesException {
-        this.capabilities = super.loadCapabilitiesFromPropertyFile();
+        this.capabilities = super.loadCapabilitiesFromPropertiesFile();
         EnvironmentVariables environmentVariables = Injectors.getInjector().getInstance(EnvironmentVariables.class);
         environmentVariables.setProperty(PLATFORM_NAME_CAP, this.capabilities.getPlatform().name());
+    }
+
+    @Override
+    public void tearDown() {
+        if(thisInstance != null){
+            Driver.tearDown(thisInstance.driver);
+            thisInstance = null;
+        }
     }
 
 }
