@@ -6,23 +6,25 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.*;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import static co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException.ERROR_LOADING_CAPABILITIES;
 
 class EnhancedCapabilities {
 
-    private Capabilities capabilities;
+    private Optional<Capabilities> capabilities;
     private Platform platform;
     private static final String FILE_SEPARATOR = File.separator;
 
     EnhancedCapabilities(Platform platform) {
         this.platform = platform;
+        capabilities = Optional.empty();
     }
 
     EnhancedCapabilities(Platform platform, Capabilities capabilities) {
         this.platform = platform;
-        this.capabilities = capabilities;
+        this.capabilities = Optional.of(capabilities);
     }
 
     DesiredCapabilities loadCapabilitiesFromPropertiesFile() throws LoadDriverCapabilitiesException {
@@ -48,8 +50,8 @@ class EnhancedCapabilities {
                     desiredCapabilities.setCapability(property, value);
                 }
             });
-            if(this.capabilities != null){
-                desiredCapabilities.merge(capabilities);
+            if(this.capabilities.isPresent()){
+                desiredCapabilities.merge(capabilities.get());
             }
             return desiredCapabilities;
         } catch (IOException e) {

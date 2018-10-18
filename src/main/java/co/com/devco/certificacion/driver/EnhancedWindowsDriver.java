@@ -2,12 +2,15 @@ package co.com.devco.certificacion.driver;
 
 import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException;
 import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
-import io.appium.java_client.windows.WindowsDriver;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.function.Function;
 
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
@@ -15,31 +18,55 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
 
     private static EnhancedWindowsDriver thisInstance;
     private DesiredCapabilities capabilities;
-    private WindowsDriver<WebElement> driver;
+    private AppiumDriver<MobileElement> driver;
 
-    public EnhancedWindowsDriver(){
+    private EnhancedWindowsDriver(){
         super(Platform.WINDOWS);
     }
 
-    public static WebDriver windows() throws FailedDriverCreationException {
+    private EnhancedWindowsDriver(Capabilities capabilities){
+        super(Platform.WINDOWS, capabilities);
+    }
+
+    public static void quit(){
+        if(thisInstance != null){
+            thisInstance.tearDown();
+        }
+    }
+
+    public static WebDriver getWindowsDriver(Capabilities capabilities) throws FailedDriverCreationException {
+        EnhancedWindowsDriver enhancedWindowsDriver = getOrCreateEnhancedWindowsDriver(EnhancedWindowsDriver::new, capabilities);
+        return enhancedWindowsDriver.driver;
+    }
+
+    public static WebDriver getWindowsDriver() throws FailedDriverCreationException {
+        EnhancedWindowsDriver enhancedWindowsDriver = getOrCreateEnhancedWindowsDriver(c -> new EnhancedWindowsDriver(), null);
+        return enhancedWindowsDriver.driver;
+    }
+
+
+    private static EnhancedWindowsDriver getOrCreateEnhancedWindowsDriver(Function<Capabilities, EnhancedWindowsDriver> functionToCreateEnhancedWindowsDriver,
+                                                                          Capabilities capabilities) throws FailedDriverCreationException {
         if (thisInstance == null) {
             try {
-                thisInstance = new EnhancedWindowsDriver();
-                return thisInstance.createDriver();
+                thisInstance = functionToCreateEnhancedWindowsDriver.apply(capabilities);
+                thisInstance.createDriver();
+                return thisInstance;
             } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
                 throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
             }
         }
-        return thisInstance.driver;
+        return thisInstance;
     }
 
     @Override
-    public WebDriver createDriver() throws MalformedURLException, LoadDriverCapabilitiesException {
+    public AppiumDriver createDriver() throws MalformedURLException, LoadDriverCapabilitiesException {
         if(this.driver == null) {
             if (capabilities == null) {
                 loadCapabilities();
             }
-            this.driver = new WindowsDriver<>(capabilities);
+            URL url = new URL(capabilities.getCapability("hub").toString());
+            this.driver = new AppiumDriver<>(url, capabilities);
         }
         return this.driver;
     }
@@ -51,9 +78,7 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
 
     @Override
     public void tearDown() {
-        if(thisInstance != null){
-            Driver.tearDown(thisInstance.driver);
-            thisInstance = null;
-        }
+        Driver.tearDown(thisInstance.driver);
+        thisInstance = null;
     }
 }
