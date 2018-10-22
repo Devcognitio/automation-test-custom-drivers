@@ -4,6 +4,8 @@ import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationExceptio
 import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import net.thucydides.core.guice.Injectors;
+import net.thucydides.core.util.EnvironmentVariables;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -16,6 +18,8 @@ import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationE
 
 public class EnhancedWindowsDriver extends EnhancedCapabilities implements Driver{
 
+    private static final String PLATFORM_NAME_CAP = "appium.platformName";
+    
     private static EnhancedWindowsDriver thisInstance;
     private DesiredCapabilities capabilities;
     private AppiumDriver<MobileElement> driver;
@@ -74,6 +78,8 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
     @Override
     public void loadCapabilities() throws LoadDriverCapabilitiesException {
         this.capabilities = super.loadCapabilitiesFromPropertiesFile();
+        EnvironmentVariables environmentVariables = Injectors.getInjector().getInstance(EnvironmentVariables.class);
+        environmentVariables.setProperty(PLATFORM_NAME_CAP, this.capabilities.getPlatform().name());
     }
 
     @Override
