@@ -19,7 +19,7 @@ import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationE
 public class EnhancedWindowsDriver extends EnhancedCapabilities implements Driver{
 
     private static final String PLATFORM_NAME_CAP = "appium.platformName";
-    
+
     private static EnhancedWindowsDriver thisInstance;
     private DesiredCapabilities capabilities;
     private AppiumDriver<MobileElement> driver;
