@@ -6,11 +6,12 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import net.thucydides.core.guice.Injectors;
 import net.thucydides.core.util.EnvironmentVariables;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Function;
 
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
@@ -27,16 +28,32 @@ public class EnhancedAppiumDriver extends EnhancedCapabilities implements Driver
         super(Platform.MOBILE);
     }
 
-    public static WebDriver getDriver() throws FailedDriverCreationException {
+    private EnhancedAppiumDriver(Capabilities capabilities){
+        super(Platform.MOBILE, capabilities);
+    }
+
+    public static AppiumDriver getDriver(Capabilities capabilities) throws FailedDriverCreationException {
+        EnhancedAppiumDriver enhancedAppiumDriver = getOrCreateEnhancedAppiumDriver(EnhancedAppiumDriver::new, capabilities);
+        return enhancedAppiumDriver.driver;
+    }
+
+    public static AppiumDriver getDriver() throws FailedDriverCreationException {
+        EnhancedAppiumDriver enhancedAppiumDriver = getOrCreateEnhancedAppiumDriver(c -> new EnhancedAppiumDriver(), null);
+        return enhancedAppiumDriver.driver;
+    }
+
+    private static EnhancedAppiumDriver getOrCreateEnhancedAppiumDriver(Function<Capabilities, EnhancedAppiumDriver> functionToCreateEnhancedWindowsDriver,
+                                                                Capabilities capabilities) throws FailedDriverCreationException {
         if (thisInstance == null) {
             try {
-                thisInstance = new EnhancedAppiumDriver();
-                return thisInstance.createDriver();
+                thisInstance = functionToCreateEnhancedWindowsDriver.apply(capabilities);
+                thisInstance.createDriver();
+                return thisInstance;
             } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
                 throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
             }
         }
-        return thisInstance.driver;
+        return thisInstance;
     }
 
     @Override
