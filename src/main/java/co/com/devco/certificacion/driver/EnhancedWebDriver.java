@@ -27,12 +27,12 @@ public class EnhancedWebDriver extends EnhancedCapabilities implements Driver {
         super(Platform.WEB, capabilities);
     }
 
-    public static WebDriver getDriver(Capabilities capabilities) throws FailedDriverCreationException {
+    public static WebDriver getWebDriver(Capabilities capabilities) throws FailedDriverCreationException {
         EnhancedWebDriver enhancedWebDriver = getOrCreateEnhancedWebDriver(EnhancedWebDriver::new, capabilities);
         return enhancedWebDriver.driver;
     }
 
-    public static WebDriver getDriver() throws FailedDriverCreationException {
+    public static WebDriver getWebDriver() throws FailedDriverCreationException {
         EnhancedWebDriver enhancedWebDriver = getOrCreateEnhancedWebDriver(c -> new EnhancedWebDriver(), null);
         return enhancedWebDriver.driver;
     }

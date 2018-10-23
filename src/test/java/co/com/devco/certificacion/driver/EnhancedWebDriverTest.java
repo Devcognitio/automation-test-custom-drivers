@@ -24,7 +24,7 @@ public class EnhancedWebDriverTest {
     public void testSuccessfulBecauseCreateChromeDriver() throws IOException, FailedDriverCreationException {
         addToThePropertyFileTheDriverPropertyWithValue("chrome");
 
-        driver = EnhancedWebDriver.getDriver();
+        driver = EnhancedWebDriver.getWebDriver();
 
         Assert.assertTrue(driver instanceof ChromeDriver);
     }
@@ -33,7 +33,7 @@ public class EnhancedWebDriverTest {
     public void testSuccessfulBecauseCreateFirefoxDriver() throws IOException, FailedDriverCreationException {
         addToThePropertyFileTheDriverPropertyWithValue("firefox");
 
-        driver = EnhancedWebDriver.getDriver();
+        driver = EnhancedWebDriver.getWebDriver();
 
         Assert.assertTrue(driver instanceof FirefoxDriver);
     }
@@ -42,7 +42,7 @@ public class EnhancedWebDriverTest {
     public void testSuccessfulBecauseCreateEdgeDriver() throws IOException, FailedDriverCreationException {
         addToThePropertyFileTheDriverPropertyWithValue("edge");
 
-        driver = EnhancedWebDriver.getDriver();
+        driver = EnhancedWebDriver.getWebDriver();
 
         Assert.assertTrue(driver instanceof EdgeDriver);
     }
@@ -53,7 +53,7 @@ public class EnhancedWebDriverTest {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.setCapability("ignoreZoomSetting", true);
 
-        driver = EnhancedWebDriver.getDriver(desiredCapabilities);
+        driver = EnhancedWebDriver.getWebDriver(desiredCapabilities);
 
         Assert.assertTrue(driver instanceof InternetExplorerDriver);
     }

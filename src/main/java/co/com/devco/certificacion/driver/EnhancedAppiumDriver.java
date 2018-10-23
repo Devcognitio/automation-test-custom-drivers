@@ -32,12 +32,12 @@ public class EnhancedAppiumDriver extends EnhancedCapabilities implements Driver
         super(Platform.MOBILE, capabilities);
     }
 
-    public static AppiumDriver getDriver(Capabilities capabilities) throws FailedDriverCreationException {
+    public static AppiumDriver getAppiumDriver(Capabilities capabilities) throws FailedDriverCreationException {
         EnhancedAppiumDriver enhancedAppiumDriver = getOrCreateEnhancedAppiumDriver(EnhancedAppiumDriver::new, capabilities);
         return enhancedAppiumDriver.driver;
     }
 
-    public static AppiumDriver getDriver() throws FailedDriverCreationException {
+    public static AppiumDriver getAppiumDriver() throws FailedDriverCreationException {
         EnhancedAppiumDriver enhancedAppiumDriver = getOrCreateEnhancedAppiumDriver(c -> new EnhancedAppiumDriver(), null);
         return enhancedAppiumDriver.driver;
     }
