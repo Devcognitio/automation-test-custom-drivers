@@ -9,6 +9,7 @@ public interface Driver<T> {
 
     T createDriver() throws MalformedURLException, LoadDriverCapabilitiesException;
     void loadCapabilities() throws LoadDriverCapabilitiesException;
+    void tearDown();
 
     static void tearDown(WebDriver driver) {
         if(driver != null) {

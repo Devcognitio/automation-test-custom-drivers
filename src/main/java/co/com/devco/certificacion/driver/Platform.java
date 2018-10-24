@@ -6,13 +6,13 @@ public enum Platform {
     WEB("webdriver"),
     WINDOWS("appium");
 
-    private final String driver;
+    private final String name;
 
-    Platform(String driver) {
-        this.driver = driver;
+    Platform(String name) {
+        this.name = name;
     }
 
-    public String driver() {
-        return driver;
+    public String getName() {
+        return name;
     }
 }

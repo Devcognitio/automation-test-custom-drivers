@@ -7,6 +7,7 @@ import io.appium.java_client.MobileElement;
 import net.thucydides.core.guice.Injectors;
 import net.thucydides.core.util.EnvironmentVariables;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -15,35 +16,41 @@ import java.util.function.Function;
 
 import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
-public class EnhancedAppiumDriver extends EnhancedCapabilities implements Driver {
-
-    private DesiredCapabilities capabilities;
-    private AppiumDriver<MobileElement> driver;
-    private static EnhancedAppiumDriver thisInstance;
+public class EnhancedWindowsDriver extends EnhancedCapabilities implements Driver{
 
     private static final String PLATFORM_NAME_CAP = "appium.platformName";
-    private static final String APPIUM_URL_CAP = "hub";
 
-    private EnhancedAppiumDriver(){
-        super(Platform.MOBILE);
+    private static EnhancedWindowsDriver thisInstance;
+    private DesiredCapabilities capabilities;
+    private AppiumDriver<MobileElement> driver;
+
+    private EnhancedWindowsDriver(){
+        super(Platform.WINDOWS);
     }
 
-    private EnhancedAppiumDriver(Capabilities capabilities){
-        super(Platform.MOBILE, capabilities);
+    private EnhancedWindowsDriver(Capabilities capabilities){
+        super(Platform.WINDOWS, capabilities);
     }
 
-    public static AppiumDriver getAppiumDriver(Capabilities capabilities) throws FailedDriverCreationException {
-        EnhancedAppiumDriver enhancedAppiumDriver = getOrCreateEnhancedAppiumDriver(EnhancedAppiumDriver::new, capabilities);
-        return enhancedAppiumDriver.driver;
+    public static void quit(){
+        if(thisInstance != null){
+            thisInstance.tearDown();
+        }
     }
 
-    public static AppiumDriver getAppiumDriver() throws FailedDriverCreationException {
-        EnhancedAppiumDriver enhancedAppiumDriver = getOrCreateEnhancedAppiumDriver(c -> new EnhancedAppiumDriver(), null);
-        return enhancedAppiumDriver.driver;
+    public static WebDriver getWindowsDriver(Capabilities capabilities) throws FailedDriverCreationException {
+        EnhancedWindowsDriver enhancedWindowsDriver = getOrCreateEnhancedWindowsDriver(EnhancedWindowsDriver::new, capabilities);
+        return enhancedWindowsDriver.driver;
     }
 
-    private static EnhancedAppiumDriver getOrCreateEnhancedAppiumDriver(Function<Capabilities, EnhancedAppiumDriver> functionToCreateEnhancedWindowsDriver,
-                                                                Capabilities capabilities) throws FailedDriverCreationException {
+    public static WebDriver getWindowsDriver() throws FailedDriverCreationException {
+        EnhancedWindowsDriver enhancedWindowsDriver = getOrCreateEnhancedWindowsDriver(c -> new EnhancedWindowsDriver(), null);
+        return enhancedWindowsDriver.driver;
+    }
+
+
+    private static EnhancedWindowsDriver getOrCreateEnhancedWindowsDriver(Function<Capabilities, EnhancedWindowsDriver> functionToCreateEnhancedWindowsDriver,
+                                                                          Capabilities capabilities) throws FailedDriverCreationException {
         if (thisInstance == null) {
             try {
                 thisInstance = functionToCreateEnhancedWindowsDriver.apply(capabilities);
@@ -58,11 +65,11 @@ public class EnhancedAppiumDriver extends EnhancedCapabilities implements Driver
 
     @Override
     public AppiumDriver createDriver() throws MalformedURLException, LoadDriverCapabilitiesException {
-        if (this.driver == null) {
+        if(this.driver == null) {
             if (capabilities == null) {
                 loadCapabilities();
             }
-            URL url = new URL(capabilities.getCapability(APPIUM_URL_CAP).toString());
+            URL url = new URL(capabilities.getCapability("hub").toString());
             this.driver = new AppiumDriver<>(url, capabilities);
         }
         return this.driver;
@@ -77,10 +84,7 @@ public class EnhancedAppiumDriver extends EnhancedCapabilities implements Driver
 
     @Override
     public void tearDown() {
-        if(thisInstance != null){
-            Driver.tearDown(thisInstance.driver);
-            thisInstance = null;
-        }
+        Driver.tearDown(thisInstance.driver);
+        thisInstance = null;
     }
-
 }
