@@ -15,7 +15,7 @@ public class EnhancedWindowsDriverTest {
     @Test
     public void testSuccessfulBecauseCreateWindowsDriver() throws IOException, FailedDriverCreationException {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("driver", "apium");
+        desiredCapabilities.setCapability("app", "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App");
 
         WebDriver driver = EnhancedWindowsDriver.getWindowsDriver(desiredCapabilities);
 

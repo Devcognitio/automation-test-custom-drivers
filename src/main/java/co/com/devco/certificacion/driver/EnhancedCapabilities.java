@@ -16,6 +16,7 @@ class EnhancedCapabilities {
     private Optional<Capabilities> capabilities;
     private Platform platform;
     private static final String FILE_SEPARATOR = File.separator;
+    public static final String PATH_RESOURCES = String.format("src%stest%sresources%s", FILE_SEPARATOR, FILE_SEPARATOR, FILE_SEPARATOR);
 
     EnhancedCapabilities(Platform platform) {
         this.platform = platform;
@@ -28,7 +29,7 @@ class EnhancedCapabilities {
     }
 
     DesiredCapabilities loadCapabilitiesFromPropertiesFile() throws LoadDriverCapabilitiesException {
-        String propertiesFileName = PropertiesFileName.valueOf(platform.name()).fileName();
+        String propertiesFileName = PATH_RESOURCES + PropertiesFileName.valueOf(platform.name()).fileName();
         try (InputStream inputStream = new FileInputStream(propertiesFileName)) {
             return load(inputStream);
         } catch (FileNotFoundException e) {
@@ -54,7 +55,7 @@ class EnhancedCapabilities {
                 desiredCapabilities.merge(capabilities.get());
             }
             return desiredCapabilities;
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             throw new LoadDriverCapabilitiesException(ERROR_LOADING_CAPABILITIES + e.getMessage(), e.getCause());
         }
     }

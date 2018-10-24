@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static co.com.devco.certificacion.driver.EnhancedCapabilities.PATH_RESOURCES;
+
 public class EnhancedWebDriverTest {
 
     private WebDriver driver;
@@ -59,8 +61,7 @@ public class EnhancedWebDriverTest {
     }
 
     private void addToThePropertyFileTheDriverPropertyWithValue(String propertyValue) throws IOException {
-        //File propertyFile = FileUtils.getFile("src/test/resources/" + PropertiesFileName.WEB.fileName());
-        File propertyFile = FileUtils.getFile(PropertiesFileName.WEB.fileName());
+        File propertyFile = FileUtils.getFile(PATH_RESOURCES + PropertiesFileName.WEB.fileName());
         FileUtils.writeStringToFile(propertyFile, String.format("webdriver.driver=%s", propertyValue), StandardCharsets.UTF_8);
     }
 
