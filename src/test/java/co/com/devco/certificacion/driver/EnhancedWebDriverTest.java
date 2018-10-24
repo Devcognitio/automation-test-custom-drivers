@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static co.com.devco.certificacion.driver.Browser.*;
 import static co.com.devco.certificacion.driver.EnhancedCapabilities.PATH_RESOURCES;
 
 public class EnhancedWebDriverTest {
@@ -24,7 +25,7 @@ public class EnhancedWebDriverTest {
 
     @Test
     public void testSuccessfulBecauseCreateChromeDriver() throws IOException, FailedDriverCreationException {
-        addToThePropertyFileTheDriverPropertyWithValue("chrome");
+        addToThePropertyFileTheDriverPropertyWithValue(CHROME.getName());
 
         driver = EnhancedWebDriver.getWebDriver();
 
@@ -33,7 +34,7 @@ public class EnhancedWebDriverTest {
 
     @Test
     public void testSuccessfulBecauseCreateFirefoxDriver() throws IOException, FailedDriverCreationException {
-        addToThePropertyFileTheDriverPropertyWithValue("firefox");
+        addToThePropertyFileTheDriverPropertyWithValue(FIREFOX.getName());
 
         driver = EnhancedWebDriver.getWebDriver();
 
@@ -42,7 +43,7 @@ public class EnhancedWebDriverTest {
 
     @Test
     public void testSuccessfulBecauseCreateEdgeDriver() throws IOException, FailedDriverCreationException {
-        addToThePropertyFileTheDriverPropertyWithValue("edge");
+        addToThePropertyFileTheDriverPropertyWithValue(EDGE.getName());
 
         driver = EnhancedWebDriver.getWebDriver();
 
@@ -51,7 +52,7 @@ public class EnhancedWebDriverTest {
 
     @Test
     public void testSuccessfulBecauseCreateDriverInternetExplorer() throws IOException, FailedDriverCreationException {
-        addToThePropertyFileTheDriverPropertyWithValue("ie");
+        addToThePropertyFileTheDriverPropertyWithValue(INTERNET_EXPLORER.getName());
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.setCapability("ignoreZoomSetting", true);
 
