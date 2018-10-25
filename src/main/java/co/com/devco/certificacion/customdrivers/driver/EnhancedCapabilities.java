@@ -1,6 +1,8 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.driver;
 
-import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
+import co.com.devco.certificacion.customdrivers.Platform;
+import co.com.devco.certificacion.customdrivers.PropertiesFileName;
+import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -9,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
-import static co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException.ERROR_LOADING_CAPABILITIES;
+import static co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException.ERROR_LOADING_CAPABILITIES;
 
 class EnhancedCapabilities {
 

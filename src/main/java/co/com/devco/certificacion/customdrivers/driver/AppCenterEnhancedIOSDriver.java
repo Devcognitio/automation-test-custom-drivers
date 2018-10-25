@@ -1,8 +1,9 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.driver;
 
-import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException;
-import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
-import com.microsoft.appcenter.appium.EnhancedAndroidDriver;
+import co.com.devco.certificacion.customdrivers.Platform;
+import co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException;
+import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
+import com.microsoft.appcenter.appium.EnhancedIOSDriver;
 import com.microsoft.appcenter.appium.Factory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -14,25 +15,25 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
+import static co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
-public class AppCenterEnhancedAndroidDriver extends EnhancedCapabilities implements Driver {
+public class AppCenterEnhancedIOSDriver extends EnhancedCapabilities implements Driver {
 
     private DesiredCapabilities capabilities;
-    private EnhancedAndroidDriver<MobileElement> driver;
-    private static AppCenterEnhancedAndroidDriver thisInstance;
+    private EnhancedIOSDriver<MobileElement> driver;
+    private static AppCenterEnhancedIOSDriver thisInstance;
 
     private static final String PLATFORM_NAME_CAP = "appium.platformName";
     private static final String APPIUM_URL_CAP = "hub";
 
-    private AppCenterEnhancedAndroidDriver() {
+    private AppCenterEnhancedIOSDriver() {
         super(Platform.MOBILE);
     }
 
     public static WebDriver getDriver() throws FailedDriverCreationException {
         if (thisInstance == null) {
             try {
-                thisInstance = new AppCenterEnhancedAndroidDriver();
+                thisInstance = new AppCenterEnhancedIOSDriver();
                 return thisInstance.createDriver();
             } catch (LoadDriverCapabilitiesException | MalformedURLException e) {
                 throw new FailedDriverCreationException(FAILED_DRIVER_CREATION + e.getMessage(), e.getCause());
@@ -54,7 +55,7 @@ public class AppCenterEnhancedAndroidDriver extends EnhancedCapabilities impleme
                 loadCapabilities();
             }
             URL url = new URL(capabilities.getCapability(APPIUM_URL_CAP).toString());
-            driver = Factory.createAndroidDriver(url, capabilities);
+            driver = Factory.createIOSDriver(url, capabilities);
         }
         return driver;
     }

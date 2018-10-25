@@ -1,4 +1,4 @@
-package co.com.devco.certificacion.driver.exceptions;
+package co.com.devco.certificacion.customdrivers.exceptions;
 
 public class LoadDriverCapabilitiesException extends Exception {
 

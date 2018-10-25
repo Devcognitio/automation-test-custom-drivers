@@ -1,7 +1,8 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.driver;
 
-import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException;
-import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
+import co.com.devco.certificacion.customdrivers.Platform;
+import co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException;
+import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import net.thucydides.core.guice.Injectors;
@@ -14,11 +15,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.function.Function;
 
-import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
+import static co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
-public class EnhancedWindowsDriver extends EnhancedCapabilities implements Driver{
+public class EnhancedWindowsDriver extends EnhancedCapabilities implements Driver {
 
     private static final String PLATFORM_NAME_CAP = "appium.platformName";
+    private static final String APPIUM_URL_CAP = "hub";
 
     private static EnhancedWindowsDriver thisInstance;
     private DesiredCapabilities capabilities;
@@ -69,7 +71,7 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
             if (capabilities == null) {
                 loadCapabilities();
             }
-            URL url = new URL(capabilities.getCapability("hub").toString());
+            URL url = new URL(capabilities.getCapability(APPIUM_URL_CAP).toString());
             this.driver = new AppiumDriver<>(url, capabilities);
         }
         return this.driver;

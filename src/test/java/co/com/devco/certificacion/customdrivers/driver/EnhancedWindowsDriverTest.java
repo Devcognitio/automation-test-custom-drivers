@@ -1,6 +1,6 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.driver;
 
-import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException;
+import co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException;
 import io.appium.java_client.AppiumDriver;
 import org.junit.After;
 import org.junit.Assert;
