@@ -22,18 +22,14 @@ ext{
 }
 
 dependencies {
-    compile "net.serenity-bdd:serenity-core:$rootProject.ext.serenityVersion"
-    compile "net.serenity-bdd:serenity-junit:$rootProject.ext.serenityVersion"
-    compile "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion"
-    compile "io.appium:java-client:6.0.0"
-    compile "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityCucumberVersion"
-
+    implementation "net.serenity-bdd:serenity-core:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-junit:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion"
+    implementation "io.appium:java-client:6.0.0"
+    implementation "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityCucumberVersion"
     implementation 'com.microsoft.appcenter:appium-test-extension:1.0'
-   // compile group: 'com.microsoft.appcenter', name: 'appcenter', version: '1.8.0'
 
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.9.1'
-    testCompile group: 'commons-io', name: 'commons-io', version: '2.6'
-    //testCompile group: 'org.powermock', name: 'powermock-api-easymock', version: '1.7.4'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.assertj:assertj-core:3.9.1'
+    testImplementation group: 'commons-io', name: 'commons-io', version: '2.6'
 }
