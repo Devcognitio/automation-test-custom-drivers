@@ -3,6 +3,7 @@ package co.com.devco.certificacion.customdrivers.driver;
 import co.com.devco.certificacion.customdrivers.Platform;
 import co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException;
 import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
+import co.com.devco.certificacion.customdrivers.exceptions.WindowsDriverException;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import net.thucydides.core.guice.Injectors;
@@ -18,18 +19,20 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
+import static co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException.NULL_DRIVER;
+import static co.com.devco.certificacion.customdrivers.exceptions.WindowsDriverException.*;
 
 public class EnhancedWindowsDriver extends EnhancedCapabilities implements Driver, Cloneable {
 
     private static final String PLATFORM_NAME_CAP = "appium.platformName";
     private static final String APPIUM_URL_CAP = "hub";
+    private static final String APP_CAP = "cap";
 
+    public static final String MAIN_WINDOW = "MAIN_WINDOW";
     private static EnhancedWindowsDriver thisInstance;
     private DesiredCapabilities capabilities;
     private AppiumDriver<MobileElement> driver;
     private static Map<String, EnhancedWindowsDriver> windows;
-
-    public static final String MAIN_WINDOW = "MAIN_WINDOW";
 
     private EnhancedWindowsDriver(){
         super(Platform.WINDOWS);
@@ -41,24 +44,28 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
         windows = new HashMap<>();
     }
 
-    public static WebDriver getWindowByKey(String key){
+    public static WebDriver getWindowByKey(String key) throws FailedDriverCreationException, WindowsDriverException {
         if(windows.isEmpty()){
-            // TODO lanzar excepcion no se ha creado ningun driver
+            throw new FailedDriverCreationException(FAILED_DRIVER_CREATION, NULL_DRIVER);
         }
 
         if(windows.containsKey(key)){
-            // TODO lanzar excepcion no existe ningun driver con ese key
+            throw new WindowsDriverException(GET_WINDOW_BY_KEY_ERROR + key, NO_ASSOCIATED_DRIVER_FOR_KEY);
         }
         return windows.get(key).driver;
     }
 
-    public static WebDriver changeToNewWindow(String idApp, String key) throws  CloneNotSupportedException, MalformedURLException, LoadDriverCapabilitiesException {
-        return changeToNewWindow(idApp, key, null);
+    public static WebDriver changeToNewWindow(String idApp, String key) throws WindowsDriverException {
+        try {
+            return changeToNewWindow(idApp, key, null);
+        } catch ( CloneNotSupportedException | MalformedURLException | WindowsDriverException | FailedDriverCreationException | LoadDriverCapabilitiesException e) {
+            throw new WindowsDriverException(CHANGE_TO_NEW_WINDOW_ERROR, e.getCause());
+        }
     }
 
-    public static WebDriver changeToNewWindow(String idApp, String key, Capabilities capabilities) throws  CloneNotSupportedException, MalformedURLException, LoadDriverCapabilitiesException {
+    public static WebDriver changeToNewWindow(String idApp, String key, Capabilities capabilities) throws CloneNotSupportedException, MalformedURLException, FailedDriverCreationException, WindowsDriverException, LoadDriverCapabilitiesException {
         if(thisInstance == null) {
-            // TODO lanzar excepcion no se ha creado ningun driver
+            throw new FailedDriverCreationException(FAILED_DRIVER_CREATION, NULL_DRIVER);
         }
 
         if(windows.containsKey(key)){
@@ -69,7 +76,7 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
         if(capabilities != null){
             thisInstance.capabilities.merge(capabilities);
         }
-        thisInstance.capabilities.setCapability("app", idApp);
+        thisInstance.capabilities.setCapability(APP_CAP, idApp);
         thisInstance.setNullDriver();
         thisInstance.createDriver();
         windows.put(key, (EnhancedWindowsDriver) thisInstance.clone());

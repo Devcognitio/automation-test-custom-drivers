@@ -2,6 +2,7 @@ package co.com.devco.certificacion.customdrivers.driver;
 
 import co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException;
 import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
+import co.com.devco.certificacion.customdrivers.exceptions.WindowsDriverException;
 import io.appium.java_client.AppiumDriver;
 import org.junit.After;
 import org.junit.Assert;
@@ -26,7 +27,7 @@ public class EnhancedWindowsDriverTest {
     }
 
     @Test
-    public void testSuccessfulBecausechangeToWindowById() throws IOException, FailedDriverCreationException, CloneNotSupportedException, LoadDriverCapabilitiesException {
+    public void testSuccessfulBecausechangeToWindowById() throws IOException, FailedDriverCreationException, CloneNotSupportedException, LoadDriverCapabilitiesException, WindowsDriverException {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.setCapability("app", "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App");
         WebDriver driver = EnhancedWindowsDriver.getWindowsDriver(desiredCapabilities);
