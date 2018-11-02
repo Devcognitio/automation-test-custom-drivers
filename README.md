@@ -17,9 +17,9 @@ En la versión 1.0, esta librería soporta los siguientes drivers:
 Para usar los drivers, es requerido tener un archivo de propiedades con los capabilities de los mismos ubicados dentro
 de la carpeta resources del módulo test del proyecto. Los archivos deben estar nombrados de la siguiente manera:
 
-* WEB: ´web.properties´
-* MOBILE, APPCENTER: ´mobile.properties´
-* WINDOWS: ´windows.properties
+* WEB: 'web.properties'
+* MOBILE, APPCENTER: 'mobile.properties'
+* WINDOWS: 'windows.properties'
 
 Este proyecto no abstrae el uso del driver, sólo su control. Por tanto, es necesario que en el proyecto donde sea
 importada esta librería, se agregue el capability con el path al driver o el ejecutable del driver. Tenga en cuenta que
@@ -28,6 +28,9 @@ de los tests un servidor de appium o windows corriendo.
 
 Cuando se requiere agregar capabilities propias de Serenity, se agregan al archivo serenity.properties en la raiz del
 proyecto.
+
+## Consideraciones adicionales para el uso del windows driver
+
 
 ## Recomendaciones
 Si se usa un web driver y el navegador es ie, se recomienda agregar el siguiente capability:
