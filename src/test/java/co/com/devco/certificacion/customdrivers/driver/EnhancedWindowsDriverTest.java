@@ -1,7 +1,7 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.driver;
 
-import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException;
-import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
+import co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException;
+import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
 import io.appium.java_client.AppiumDriver;
 import org.junit.After;
 import org.junit.Assert;
@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.IOException;
 
-import static co.com.devco.certificacion.driver.EnhancedWindowsDriver.MAIN_WINDOW;
+import static co.com.devco.certificacion.customdrivers.driver.EnhancedWindowsDriver.MAIN_WINDOW;
 
 public class EnhancedWindowsDriverTest {
 

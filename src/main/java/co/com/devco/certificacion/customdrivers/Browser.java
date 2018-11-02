@@ -1,4 +1,4 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;

@@ -1,4 +1,4 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.habilities;
 
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import org.openqa.selenium.WebDriver;

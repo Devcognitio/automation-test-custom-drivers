@@ -1,6 +1,6 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.driver;
 
-import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
+import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
 import org.openqa.selenium.WebDriver;
 
 import java.net.MalformedURLException;

@@ -1,7 +1,9 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.driver;
 
-import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException;
-import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
+import co.com.devco.certificacion.customdrivers.Browser;
+import co.com.devco.certificacion.customdrivers.Platform;
+import co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException;
+import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -9,12 +11,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.net.MalformedURLException;
 import java.util.function.Function;
 
-import static co.com.devco.certificacion.driver.Browser.getBrowserByNameOtherwiseChrome;
-import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
+import static co.com.devco.certificacion.customdrivers.Browser.getBrowserByNameOtherwiseChrome;
+import static co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
 public class EnhancedWebDriver extends EnhancedCapabilities implements Driver {
 
-    private static final String BROWSER_NAME_CAPABILITY = "driver";
+    private static final String BROWSER_NAME_CAPABILITY = "customdrivers";
     private DesiredCapabilities capabilities;
     private WebDriver driver;
     private static EnhancedWebDriver thisInstance;

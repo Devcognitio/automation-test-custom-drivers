@@ -1,7 +1,8 @@
-package co.com.devco.certificacion.driver;
+package co.com.devco.certificacion.customdrivers.driver;
 
-import co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException;
-import co.com.devco.certificacion.driver.exceptions.LoadDriverCapabilitiesException;
+import co.com.devco.certificacion.customdrivers.Platform;
+import co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException;
+import co.com.devco.certificacion.customdrivers.exceptions.LoadDriverCapabilitiesException;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import net.thucydides.core.guice.Injectors;
@@ -13,7 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.function.Function;
 
-import static co.com.devco.certificacion.driver.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
+import static co.com.devco.certificacion.customdrivers.exceptions.FailedDriverCreationException.FAILED_DRIVER_CREATION;
 
 public class EnhancedAppiumDriver extends EnhancedCapabilities implements Driver {
 
