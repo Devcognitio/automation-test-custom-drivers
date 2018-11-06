@@ -31,6 +31,44 @@ proyecto.
 
 ## Consideraciones adicionales para el uso del windows driver
 
+###### Trabajar con una sola ventana:
+
+Para interactuar con una sola ventana se debe crear el driver a través de alguno de
+los siguientes métodos getWindowsDriver(Capabilities capabilities) o getWindowsDriver(). En caso de cambiar a otra 
+plataforma sea móvil o web se debe utilizar el método getWindowsDriver() para retomar el control de la ventana.  
+
+###### Trabajar con una múltiples ventanas:
+Para interactuar con múltiples ventanas se debe crear el primer driver a través 
+de alguno de los siguientes métodos getWindowsDriver(Capabilities capabilities) o getWindowsDriver(), este primer driver 
+tendrá el control de la primera ventana. Para crear un driver que interactué con una nueva ventana (ya sea de la misma 
+aplicación o de otra) se utilizará uno de los siguientes métodos changeToNewWindow(String idApp, String key) o 
+changeToNewWindow(String idApp, String key, Capabilities capabilities). En caso de haber cambiado de plataforma sea móvil, 
+web o para cambiar entre ventanas ya abiertas se debe utilizar el método getWindowByKey(String key), donde key corresponde 
+al key utilizado en el método changeToNewWindow, para el primer driver que se creo utilizando otro método se debe utilizar 
+la constante MAIN_WINDOW. Ejemplo:
+```
+// Creamos el primer driver tomando el key (Capabilitie app) del archivo de propiedades
+WebDriver driver = EnhancedWindowsDriver.getWindowsDriver();
+// trabajamos con la primera ventana
+...
+driver = EnhancedWindowsDriver.changeToNewWindow("C:\\Windows\\System32\\notepad.exe", "NOTE");
+// trabajamos con la segunda ventana
+...
+EnhancedWindowsDriver.changeToNewWindow("Microsoft.WindowsCalculator_8wekyb3d8bbwe!App", "CALCULATOR");
+// trabajamos con la tercera ventana
+...
+// Volvemos a la Segunda ventanas
+driver = EnhancedWindowsDriver.getWindowByKey("NOTE");
+// Trabajamos con la segunda ventana
+...
+// Volvemos a la tercera ventana
+driver = EnhancedWindowsDriver.getWindowByKey("CALCULATOR");
+// trabajamos con la tercera ventana
+...
+// Volvemos a la primera ventana
+driver = EnhancedWindowsDriver.getWindowByKey(EnhancedWindowsDriver.MAIN_WINDOW);
+// trabajamos con la primera ventana
+```
 
 ## Recomendaciones
 Si se usa un web driver y el navegador es ie, se recomienda agregar el siguiente capability:

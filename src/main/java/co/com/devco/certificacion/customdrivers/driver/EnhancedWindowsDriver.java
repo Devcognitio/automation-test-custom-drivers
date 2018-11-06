@@ -26,7 +26,7 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
 
     private static final String PLATFORM_NAME_CAP = "appium.platformName";
     private static final String APPIUM_URL_CAP = "hub";
-    private static final String APP_CAP = "cap";
+    private static final String APP_CAP = "app";
 
     public static final String MAIN_WINDOW = "MAIN_WINDOW";
     private static EnhancedWindowsDriver thisInstance;
@@ -49,7 +49,7 @@ public class EnhancedWindowsDriver extends EnhancedCapabilities implements Drive
             throw new FailedDriverCreationException(FAILED_DRIVER_CREATION, NULL_DRIVER);
         }
 
-        if(windows.containsKey(key)){
+        if(!windows.containsKey(key)){
             throw new WindowsDriverException(GET_WINDOW_BY_KEY_ERROR + key, NO_ASSOCIATED_DRIVER_FOR_KEY);
         }
         return windows.get(key).driver;

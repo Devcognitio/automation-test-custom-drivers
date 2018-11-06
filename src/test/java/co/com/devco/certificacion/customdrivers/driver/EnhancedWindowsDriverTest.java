@@ -38,7 +38,8 @@ public class EnhancedWindowsDriverTest {
         driver.findElement(By.className("Edit")).sendKeys("Hola Mundo");
 
         driver = EnhancedWindowsDriver.getWindowByKey(MAIN_WINDOW);
-        driver.findElement(By.name("Seven")).click();
+        WebElement boton7 = driver.findElement(By.name("Seven"));
+        boton7.click();
         String result = driver.findElement(By.xpath("//*[@AutomationId='CalculatorResults']")).getText().replace("Display is", "").trim();
 
         driver = EnhancedWindowsDriver.changeToNewWindow("Microsoft.WindowsCalculator_8wekyb3d8bbwe!App", "CAL2");
